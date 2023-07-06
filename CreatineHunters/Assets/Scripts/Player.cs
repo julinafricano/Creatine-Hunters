@@ -13,8 +13,6 @@ public class Player : MonoBehaviour
     private Animator anim;
 
 
-
-
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
@@ -35,18 +33,26 @@ public class Player : MonoBehaviour
         if (movement > 0) 
         {
             transform.eulerAngles = new Vector3(0,0,0);
+            anim.SetInteger("transition", 1);
+
         }
 
         if (movement < 0)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);
+            anim.SetInteger("transition", 1);
+
         }
+        if (movement == 0)
+            anim.SetInteger("transition", 0);   
 
     }
     void Jump() 
     {
         if (Input.GetButtonDown("Jump")) 
         {
+            anim.SetInteger("transition", 2);
+
             rig.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
         }
     }
