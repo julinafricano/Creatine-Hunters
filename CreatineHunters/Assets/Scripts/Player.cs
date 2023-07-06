@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public float speed;
     public float jumpforce;
+    private bool isJumping;
 
     private Rigidbody2D rig;
     private Animator anim;
@@ -51,9 +52,22 @@ public class Player : MonoBehaviour
     {
         if (Input.GetButtonDown("Jump")) 
         {
-            anim.SetInteger("transition", 2);
+            if (!isJumping)
+            {
+                rig.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
+                isJumping = true;
+                anim.SetInteger("transition", 2);
 
-            rig.AddForce(new Vector2(0, jumpforce), ForceMode2D.Impulse);
-        }
+            }
+
+        }  
+    }
+
+    private void OnCollisionEnter2D(Collision2D coll)
+    {
+        if(coll.gameObject.layer == 8)
+        {
+            isJumping = false;
+        }   
     }
 }
