@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class Proj : MonoBehaviour
 {
     private Rigidbody2D rig;
     public float speed;
+    private Vector2 direction;
+    public int damage;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +19,19 @@ public class Proj : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rig.velocity = Vector2.right * speed;
+        rig.velocity = direction * speed;
+    }
+    public void setup(Vector2 direction)
+    {
+        this.direction = direction;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            collision.GetComponent<EnemyMush>().Damage(damage);
+            Destroy(gameObject);
+        }
     }
 }

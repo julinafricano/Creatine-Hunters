@@ -11,14 +11,19 @@ public class Player : MonoBehaviour
     private bool isJumping;
     private bool isFire;
 
+    public Transform firepoint;
+    public GameObject proj; 
+
     private Rigidbody2D rig;
     private Animator anim;
 
-
+    private float lookdir;
     void Start()
     {
         rig = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        lookdir = 1;
+
     }
 
     // Update is called once per frame
@@ -35,6 +40,7 @@ public class Player : MonoBehaviour
 
         if (movement > 0 ) 
         {
+            lookdir = 1;
             if (!isJumping) 
             {
                 anim.SetInteger("transition", 1);
@@ -45,9 +51,11 @@ public class Player : MonoBehaviour
         }
 
         if (movement < 0)
-        {
+        {   
+            lookdir = -1;
             if (!isJumping) 
             {
+
                 anim.SetInteger("transition", 1);
             }
             transform.eulerAngles = new Vector3(0, 180, 0);
@@ -76,21 +84,26 @@ public class Player : MonoBehaviour
 
     void RayFire()
     {
-
-        StartCoroutine("Fire");
+        if (isFire) return;
+        if (Input.GetKeyDown(KeyCode.E))   
+        {
+            
+            StartCoroutine("Fire");
+        }
+        
     }
 
-    
     IEnumerator Fire()
     {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            isFire = true;
-            anim.SetInteger("transition", 3);
-            yield return new WaitForSeconds(0.7f);
-            anim.SetInteger("transition", 0);
+       
+        isFire = true;
+        anim.SetInteger("transition", 3);
+        Instantiate(proj, firepoint.position, Quaternion.identity).GetComponent<Proj>().setup(Vector2.right * lookdir) ;
+        yield return new WaitForSeconds(0.7f);
+        anim.SetInteger("transition", 0);
+        isFire = false;
 
-        }
+    
     }
     private void OnCollisionEnter2D(Collision2D coll)
     {
