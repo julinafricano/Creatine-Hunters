@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -28,10 +29,19 @@ public class Proj : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag == "Enemy")
+        if (collision.gameObject.tag == "Enemy" )
         {
             collision.GetComponent<EnemyMush>().Damage(damage);
             Destroy(gameObject);
+
         }
+        if (collision.gameObject.tag == "wall")
+        {
+            Destroy(gameObject);
+
+        }
+
+
+
     }
 }
