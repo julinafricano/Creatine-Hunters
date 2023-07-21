@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
             transform.position += new Vector3(-1f, 0,0);
         }
 
-        if (transform.rotation.y == 180)
+        else
         {
             transform.position += new Vector3(1f, 0, 0);
         }
@@ -128,6 +128,13 @@ public class Player : MonoBehaviour
         {
                    
         }
+    }
+
+    public void IncreaseLife(int value)
+
+    {
+        health += value;
+        GameController.instance.UpdateLives(health);
     }
 
 
