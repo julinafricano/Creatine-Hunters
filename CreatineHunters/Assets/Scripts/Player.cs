@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
 
         if (health <= 0) 
         {
-                   
+            GameController.instance.GameOver();
         }
     }
 
@@ -144,5 +144,10 @@ private void OnCollisionEnter2D(Collision2D coll)
         {
             isJumping = false;
         }   
+        if (coll.gameObject.layer == 9)
+        {
+            GameController.instance.GameOver();
+
+        }
     }
 }
